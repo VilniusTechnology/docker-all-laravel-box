@@ -8,7 +8,7 @@ MAINTAINER "Vardenis Pavardenis" <meilas@gmail.com>
 RUN apt-get update -y && apt-get install -y nginx
 
 # Pridedame Nginx konfiguracijos faila i konteineri.
-ADD config/laravel /etc/nginx/sites-available/laravel
+ADD config/laravel.config /etc/nginx/sites-available/laravel.config
 
 # Ijungiame vhosto konfiguracija.
 RUN ln -s /etc/nginx/sites-available/laravel /etc/nginx/sites-enabled/laravel && \
