@@ -40,13 +40,34 @@ RUN apt-get update \
       php5-common \
       php5-mongo
 
-#Git
+# Git
 RUN apt-get install -y git-all
+
+# Xdebug
+RUN pecl install xdebug
+
+RUN curl -SL "http://xdebug.org/files/xdebug-2.4.0rc2.tgz" -o xdebug.tgz
+RUN tar zxvf xdebug.tgz
+RUN cd xdebug-2.4.0RC2 && \
+    phpize && \
+    ./configure && \
+    make && \
+    cp modules/xdebug.so /usr/local/lib/php/extensions/no-debug-non-zts-20151012
+
+# PHP Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# Deploy Laravel installer
+RUN composer global require "laravel/installer"
+RUN ln -s /root/.composer/vendor/bin/laravel /usr/local/bin/laravel
+RUN PATH=$PATH:/root/.composer/vendor/bin
 
 # Jei turite dideliu specifiniu poreikiu.
 # Idekite savo php.ini i isorine config direktorija.
 # Ir atkomentuokite, tuomet php naudos sita config'a.
-#ADD config/php.ini     /etc/php5/fpm/php.ini
+#ADD ini/php.ini     /etc/php5/fpm/php.ini
+#ADD ini/php5.ini     /etc/php5/fpm/php.ini
+#ADD ini/php7.ini     /etc/php5/fpm/php.ini
 
 # Taciau, jei reikia pakoreguoti viena ar kelias eilutes, patogiau yra taip:
 RUN sed -i "s/;date.timezone =.*/date.timezone = Europe\/Vilnius/" /etc/php5/fpm/php.ini
