@@ -41,7 +41,7 @@ RUN apt-get update \
       php5-mongo
 
 # Git
-RUN apt-get install -y git-all
+RUN apt-get install git-all
 
 # Xdebug
 RUN pecl install xdebug
